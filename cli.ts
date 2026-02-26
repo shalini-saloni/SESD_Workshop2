@@ -42,4 +42,19 @@ program
     }
 });
 
+program
+.command("pokemon")
+.description("Random pokemon")
+.action(async() => {
+    try{
+        const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=1000");
+        const pokemons = res.data.results;
+        const randomIndex = Math.floor(Math.random() * pokemons.length);
+        console.log(pokemons[randomIndex].name);
+    }
+    catch(err){
+        console.log(err);
+    }
+});
+
 program.parse();
