@@ -28,4 +28,18 @@ program
 .description("Divides first number by second")
 .action((n1, n2) => {console.log(Number(n1) / Number(n2))});
 
+program
+.command("joke")
+.description("Random joke")
+.action(async() => {
+    try{
+        const res = await axios.get("https://official-joke-api.appspot.com/random_joke");
+        console.log(res.data.setup);
+        console.log(res.data.punchline);
+    }
+    catch(err){
+        console.log(err);
+    }
+});
+
 program.parse();
