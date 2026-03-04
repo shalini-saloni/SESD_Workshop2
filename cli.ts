@@ -1,60 +1,17 @@
 #!/usr/bin/env node
-const {Command} = require('commander');
-const axios = require('axios');
+const cli_engine = require('./cli_engine/cli_engine');
+const greet_command = require('./commands/greetCommand');
+const add_command = require('./commands/addCommand');
+const subtract_command = require('./commands/subtractCommand');
+const multiply_command = require('./commands/multiplyCommand');
+const divide_command = require('./commands/divideCommand');
+const joke_command = require('./commands/jokeCommand');
+const pokemon_command = require('./commands/pokemonCommand');
+const quote_command = require('./commands/quoteCommand');
+const weather_command = require('./commands/weatherCommand');
+const fact_command = require('./commands/factCommand');
 
-const program = new Command();
 
-program
-.command("greet <name>")
-.action((name) => {console.log(`Hello, ${name}!`)});
-
-program 
-.command("add <n1> <n2>")
-.description("Adds two numbers")
-.action((n1, n2) => {console.log(Number(n1) + Number(n2))});
-
-program
-.command("subtract <n1> <n2>")
-.description("Subtracts second number from first")
-.action((n1, n2) => {console.log(Number(n1) - Number(n2))});
-
-program
-.command("multiply <n1> <n2>")
-.description("Multiplies two numbers")
-.action((n1, n2) => {console.log(Number(n1) * Number(n2))});
-
-program 
-.command("divide <n1> <n2>")
-.description("Divides first number by second")
-.action((n1, n2) => {console.log(Number(n1) / Number(n2))});
-
-program
-.command("joke")
-.description("Random joke")
-.action(async() => {
-    try{
-        const res = await axios.get("https://official-joke-api.appspot.com/random_joke");
-        console.log(res.data.setup);
-        console.log(res.data.punchline);
-    }
-    catch(err){
-        console.log(err);
-    }
-});
-
-program
-.command("pokemon")
-.description("Random pokemon")
-.action(async() => {
-    try{
-        const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=1000");
-        const pokemons = res.data.results;
-        const randomIndex = Math.floor(Math.random() * pokemons.length);
-        console.log(pokemons[randomIndex].name);
-    }
-    catch(err){
-        console.log(err);
-    }
-});
-
-program.parse();
+const engine = new cli_engine();
+engine.registerCommand([greet_command, add_command, subtract_command, multiply_command, divide_command, joke_command, pokemon_command, quote_command, weather_command, fact_command]);
+engine.run();
